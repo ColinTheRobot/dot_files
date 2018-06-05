@@ -87,10 +87,6 @@ let bclose_multiple = 0
 :imap jj <ESC>
 :imap bbb require 'pry'; binding.pry
 
-:imap cabl Co-authored-by: Lorry <lorrayne.rocha@simplybusiness.com>
-:imap cabr Co-authored-by: Regina <regina.ranstrom@simplybusiness.com>
-:imap cabh Co-authored-by: Harshi <harshitha.suresh@simplybusiness.com>
-
 :imap cab <C-R>=CoAuthorFunc()<CR>
 function! CoAuthorFunc()
  let user_input = input('First and last name: ')

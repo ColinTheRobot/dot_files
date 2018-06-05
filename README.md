@@ -6,9 +6,9 @@ clone recursively:
 
 create symlnks:
 
-  - ln -sf <absolute path>/dot_files/tmux.conf ~/.tmux.conf
-  - ln -sf <absolute path>/dot_files/.vim ~/.vim
-  - ln -sf <absolute path>/dot_files/vimrc ~/.vimrc
+  - `ln -sf <absolute path>/dot_files/tmux.conf ~/.tmux.conf`
+  - `ln -sf <absolute path>/dot_files/.vim ~/.vim`
+  - `ln -sf <absolute path>/dot_files/vimrc ~/.vimrc`
 
 ### Removing plugins
 To remove `foo`:

@@ -28,3 +28,30 @@
 [submodule "pack/plugins/start/vim-vroom"]
 	path = pack/plugins/start/vim-vroom
 	url = https://github.com/skalnik/vim-vroom.git
+[submodule ".vim/pack/plugins/start/vim-ruby"]
+	path = .vim/pack/plugins/start/vim-ruby
+	url = https://github.com/vim-ruby/vim-ruby.git
+[submodule ".vim/pack/plugins/start/vim-vroom"]
+	path = .vim/pack/plugins/start/vim-vroom
+	url = https://github.com/skalnik/vim-vroom.git
+[submodule ".vim/pack/plugins/start/vim-rails"]
+	path = .vim/pack/plugins/start/vim-rails
+	url = https://github.com/tpope/vim-rails.git
+[submodule ".vim/pack/plugins/start/vim-gitgutter"]
+	path = .vim/pack/plugins/start/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git
+[submodule ".vim/pack/plugins/start/vim-colorschemes"]
+	path = .vim/pack/plugins/start/vim-colorschemes
+	url = https://github.com/flazz/vim-colorschemes.git
+[submodule ".vim/pack/plugins/start/tabular"]
+	path = .vim/pack/plugins/start/tabular
+	url = https://github.com/godlygeek/tabular.git
+[submodule ".vim/pack/plugins/start/tComment"]
+	path = .vim/pack/plugins/start/tComment
+	url = https://github.com/vim-scripts/tComment.git
+[submodule ".vim/pack/plugins/start/fzf.vim"]
+	path = .vim/pack/plugins/start/fzf.vim
+	url = https://github.com/junegunn/fzf.vim.git
+[submodule ".vim/pack/plugins/start/ale"]
+	path = .vim/pack/plugins/start/ale
+	url = https://github.com/w0rp/ale.git

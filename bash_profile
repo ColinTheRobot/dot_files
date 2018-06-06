@@ -4,16 +4,17 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 
 { eval `ssh-agent`; ssh-add -K; } &>/dev/null
 
+# PROMPT
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWCOLORHINTS=1
 source ~/.git-prompt.sh
-
 export PROMPT_COMMAND='__git_ps1 "\W" " $ "'
-# SET EDITOR
+
+# GLOBAL EDITOR
 export EDITOR=vim
 
-# PRESERVE HISTORY
+# HISTORY PERSERVATION
 
 # Maximum number of history lines in memory
 export HISTSIZE=50000
@@ -26,12 +27,12 @@ shopt -s histappend
 # After each command, append to the history file and reread it
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
-
+# GIT AUTO COMPLETE
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
-# ALIASES 
+# ALIASES / FUNCTIONS
 # =================
 alias restart_video='sudo killall VDCAssistant'
 alias restart_audio='sudo killall coreaudiod'
@@ -73,7 +74,7 @@ function cd {
 alias pg-start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 alias pg-stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 
-# GIT ALIASES
+# GIT 
 alias gs='git status '
 alias ga='git add '
 alias gb='git branch '
@@ -90,7 +91,9 @@ alias vimrc='vim ~/.vimrc'
 alias bx='bundle exec'
 alias bxr='bundle exec rspec'
 
+# FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 fd() {
   local dir
   dir=$(find ${1:-.} -path '*/\.*' -prune \
@@ -98,4 +101,4 @@ fd() {
   cd "$dir"
 }
 
-source ~/.sb_profile
+if [ -f "~/.sb_profile" ]; then source ~/.sb_profile; fi

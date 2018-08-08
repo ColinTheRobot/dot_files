@@ -101,4 +101,4 @@ fd() {
   cd "$dir"
 }
 
-if [ -f "~/.sb_profile" ]; then source ~/.sb_profile; fi
+source ~/.sb_profile

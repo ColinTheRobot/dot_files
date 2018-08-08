@@ -6,6 +6,12 @@ set nocompatible
 set clipboard=unnamed
 filetype off
 
+" Big remaps
+let mapleader = ','
+let bclose_multiple = 0
+:imap jj <ESC>
+:imap bbb require 'pry'; binding.pry
+
 " Remove open banner
 let g:netrw_banner = 0
 " open files in new tab
@@ -25,6 +31,16 @@ filetype plugin indent on
 " let g:vroom_cucumber_path = '*.feature'
 let g:vroom_konacha_command = 'bundle exec rake js:jasmine:server'
 let g:vroom_konacha_spec_root = '/spec/javascripts'
+
+" Tabularize mappings
+if exists(":Tabularize")
+  nmap <Leader>a= :Tabularize /=<CR>
+  vmap <Leader>a= :Tabularize /=<CR>
+  nmap <Leader>a| :Tabularize /|<CR>
+  vmap <Leader>a| :Tabularize /|<CR>
+  nmap <Leader>a: :Tabularize /:\zs<CR>
+  vmap <Leader>a: :Tabularize /:\zs<CR>
+endif
 
 
 "W0RP/ALE

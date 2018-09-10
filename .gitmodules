@@ -40,9 +40,6 @@
 [submodule ".vim/pack/plugins/start/vim-gitgutter"]
 	path = .vim/pack/plugins/start/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
-[submodule ".vim/pack/plugins/start/vim-colorschemes"]
-	path = .vim/pack/plugins/start/vim-colorschemes
-	url = https://github.com/flazz/vim-colorschemes.git
 [submodule ".vim/pack/plugins/start/tabular"]
 	path = .vim/pack/plugins/start/tabular
 	url = https://github.com/godlygeek/tabular.git

@@ -11,6 +11,9 @@ export GIT_PS1_SHOWCOLORHINTS=1
 source ~/.git-prompt.sh
 export PROMPT_COMMAND='__git_ps1 "\W" " $ "'
 
+# COLOR
+export TERM=xterm-256color
+
 # GLOBAL EDITOR
 export EDITOR=vim
 
@@ -22,6 +25,7 @@ export HISTSIZE=50000
 export HISTFILESIZE=50000
 # Ignore duplicate lines
 export HISTCONTROL=ignoredups:erasedups
+
 # append history file instead of overwrite
 shopt -s histappend
 # After each command, append to the history file and reread it

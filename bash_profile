@@ -3,7 +3,6 @@ eval "$(rbenv init -)"
 export PATH="$HOME/.rbenv/bin:$PATH"
 
 { eval `ssh-agent`; ssh-add -K; } &>/dev/null
-
 # PROMPT
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1

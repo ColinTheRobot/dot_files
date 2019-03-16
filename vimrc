@@ -42,15 +42,9 @@ if exists(":Tabularize")
   vmap <Leader>a: :Tabularize /:\zs<CR>
 endif
 
-
-"W0RP/ALE
-let g:ale_linters = { 'ruby': ['rubocop'] }
-let g:ale_echo_msg_format = '[%linter%] %s'
-let g:ale_statusline_format = ['E:%d', 'W:%d', '']
-
 " Basic visual settings
 set t_Co=256
-colorscheme molokai
+colorscheme Benokai
 set colorcolumn=80
 set number
 set tabstop=2

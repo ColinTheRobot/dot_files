@@ -94,6 +94,9 @@ alias vimrc='vim ~/.vimrc'
 
 alias bx='bundle exec'
 alias bxr='bundle exec rspec'
+alias bus='bundle update --source'
+
+alias delete-merged='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
 
 # FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

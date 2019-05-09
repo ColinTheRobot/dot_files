@@ -75,14 +75,14 @@ set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkwait10
 
 " Hybrid line number
-set number relativenumber
-
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-augroup END
-
+" set number relativenumber
+"
+" augroup numbertoggle
+"   autocmd!
+"   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+"   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+" augroup END
+"
 " Make backspace work
 set backspace=2
 

@@ -93,7 +93,7 @@ alias vimrc='vim ~/.vimrc'
 
 alias bx='bundle exec'
 alias bxr='bundle exec rspec'
-alias bus='bundle update --source'
+alias bus='bundle update --conservative'
 
 alias delete-merged='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
 

@@ -1,3 +1,5 @@
+# https://shapeshed.com/vim-packages
+
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 eval "$(rbenv init -)"

@@ -1,4 +1,5 @@
 export PATH="/usr/local/sbin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
 eval "$(rbenv init -)"
 export PATH="$HOME/.rbenv/bin:$PATH"
 
@@ -9,6 +10,7 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWCOLORHINTS=1
 source ~/.git-prompt.sh
 export PROMPT_COMMAND='__git_ps1 "\W" " $ "'
+export DISABLE_SPRING=1
 
 # COLOR
 export TERM=xterm-256color
@@ -78,27 +80,28 @@ alias pg-start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.p
 alias pg-stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 
 # GIT 
-alias gs='git status '
-alias ga='git add '
-alias gb='git branch '
-alias gc='git commit'
-alias gd='git diff'
-alias go='git checkout '
+# alias gs='git status '
+# alias ga='git add '
+# alias gb='git branch '
+# alias gc='git commit'
+# alias gd='git diff'
+# alias gco='git checkout '
 
 alias got='git '
 alias get='git '
 
+alias sb_profile='vim ~/.sb_profile'
 alias bash_profile='vim ~/.bash_profile'
 alias vimrc='vim ~/.vimrc'
-
-alias bx='bundle exec'
-alias bxr='bundle exec rspec'
-alias bus='bundle update --conservative'
 
 alias delete-merged='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
 
 # FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+findbranch() {
+  git branch | grep $@
+}
 
 fd() {
   local dir
@@ -107,4 +110,14 @@ fd() {
   cd "$dir"
 }
 
+
+export KIBANA_VERSION=7.4.2
+export KIBANA_HOME=/usr/local/Cellar/kibana/7.4.2
+export KIBANA_CONF_DIR=$KIBANA_HOME/config
+export PATH=$PATH:$KIBANA_HOME/bin
+alias kibana='./bin/kibana'
+
 source ~/.sb_profile
+
+
+export PATH="$HOME/.cargo/bin:$PATH"

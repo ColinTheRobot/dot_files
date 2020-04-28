@@ -17,6 +17,9 @@ let g:netrw_banner = 0
 " open files in new tab
 let g:netrw_browse_split = 3
 
+" relative path  (src/foo.txt)
+nnoremap <leader>a :let @*=expand("%")<CR>
+
 " FZF
 set rtp+=/usr/local/opt/fzf
 
@@ -41,6 +44,9 @@ if exists(":Tabularize")
   nmap <Leader>a: :Tabularize /:\zs<CR>
   vmap <Leader>a: :Tabularize /:\zs<CR>
 endif
+
+" map <Leader>rt :w<cr>:call RunCurrentTest('!ts bxr')<CR>
+
 
 " Basic visual settings
 set t_Co=256
@@ -96,6 +102,8 @@ let mapleader = ','
 let bclose_multiple = 0
 :imap jj <ESC>
 :imap bbb require 'pry'; binding.pry
+:imap rrr File.write("#{subject}.data", cover_response.rating_log)
+" :imap ttt trace = TracePoint.new(:raise) { |tp| binding.pry if tp.raised_exception.class == NoMethodError } trace.enable { [...] }
 
 :imap cab <C-R>=CoAuthorFunc()<CR>
 function! CoAuthorFunc()

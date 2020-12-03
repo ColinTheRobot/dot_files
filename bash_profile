@@ -3,7 +3,7 @@
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/bin:$PATH"
+# export PATH="$HOME/.rbenv/bin:$PATH"
 
 { eval `ssh-agent`; ssh-add -K; } &>/dev/null
 # PROMPT

@@ -11,6 +11,8 @@ let mapleader = ','
 let bclose_multiple = 0
 :imap jj <ESC>
 :imap bbb require 'pry'; binding.pry
+:imap sss RSpec.configure { \|config\| config.backtrace_exclusion_patterns << /gems/ }
+
 
 " Remove open banner
 let g:netrw_banner = 0
@@ -50,7 +52,8 @@ endif
 
 " Basic visual settings
 set t_Co=256
-colorscheme Benokai
+" colorscheme Benokai
+colorscheme morning
 set colorcolumn=80
 set number
 set tabstop=2

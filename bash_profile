@@ -3,7 +3,12 @@
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 eval "$(rbenv init -)"
-# export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+
+# https://github.com/tmux/tmux/issues/1646
+# TMUX errors after a hard restart with sessions
+# replace the TMP dir used
+export TMUX_TMPDIR=/tmp/foo
 
 { eval `ssh-agent`; ssh-add -K; } &>/dev/null
 # PROMPT

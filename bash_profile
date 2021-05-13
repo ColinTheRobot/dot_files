@@ -1,7 +1,6 @@
 # https://shapeshed.com/vim-packages
 
 export PATH="/usr/local/sbin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
 eval "$(rbenv init -)"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATh="$HOME/.rbenv/shims/solargraph:$PATH"
@@ -18,7 +17,8 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWCOLORHINTS=1
 source ~/.git-prompt.sh
 export PROMPT_COMMAND='__git_ps1 "\W" " $ "'
-export DISABLE_SPRING=1
+
+ENABLE_SPRING_WORKAROUND=true
 
 # COLOR
 export TERM=xterm-256color
@@ -90,9 +90,6 @@ alias pg-stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.
 # GIT 
 alias gs='git status '
 alias ga='git add '
-# alias gb='git branch '
-# alias gc='git commit'
-# alias gd='git diff'
 alias gco='git checkout '
 
 alias got='git '
@@ -102,6 +99,7 @@ alias sb_profile='vim ~/.sb_profile'
 alias bash_profile='vim ~/.bash_profile'
 alias vimrc='vim ~/.vimrc'
 
+# Branch maintenance
 alias delete-merged='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
 
 # FZF
@@ -120,13 +118,10 @@ fd() {
 
 RSPEC_STACKTRACE_EXCLUDE_GEMS=true
 
-export KIBANA_VERSION=7.4.2
-export KIBANA_HOME=/usr/local/Cellar/kibana/7.4.2
-export KIBANA_CONF_DIR=$KIBANA_HOME/config
-export PATH=$PATH:$KIBANA_HOME/bin
-alias kibana='./bin/kibana'
+rubocop-branch() {
+  rubocop -A $(git diff master...$(git rev-parse --abbrev-ref HEAD) --name-only --no-merges)
+}
 
 source ~/.sb_profile
 
-
-export PATH="$HOME/.cargo/bin:$PATH"
+. "$HOME/.cargo/env"

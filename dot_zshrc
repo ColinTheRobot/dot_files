@@ -1,0 +1,131 @@
+source ~/.zshenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+# Load Git completion
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+fpath=(~/.zsh $fpath)
+
+autoload -Uz compinit && compinit
+
+
+# ALIASES / FUNCTIONS
+# =================
+alias restart_video='sudo killall VDCAssistant'
+alias restart_audio='sudo killall coreaudiod'
+
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    man "$@"
+}
+
+desktop() {
+  if [[ $@ == "--hide" ]]; then
+      command defaults write com.apple.finder CreateDesktop false; killall Finder
+  elif
+    [[ $@ == "--show" ]]; then
+      command defaults write com.apple.finder CreateDesktop true; killall Finder
+  else
+    printf "\a missing arg: use hide or show flags \n"
+  fi
+}
+
+function run_modified_specs() {
+  if [[ $# -eq 0 ]]; then
+     git modified-specs master | xargs bundle exec rspec
+  else
+     git modified-specs $@ | xargs bundle exec rspec
+  fi
+}
+
+function cd {
+    builtin cd "$@"
+    if [ -d ".git" ]; then
+        grep "git secrets --pre_commit_hook" .git/hooks/pre-commit -q 2> /dev/null
+        if [ ! $? -eq 0 ]; then
+            git secrets --install
+        fi
+    fi
+}
+
+# PSQL
+alias pg-start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+alias pg-stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+
+# GIT
+alias gs='git status '
+alias ga='git add '
+alias gco='git checkout '
+
+alias got='git '
+alias get='git '
+
+alias sb_profile='vim ~/.sb_profile'
+alias bash_profile='vim ~/.bash_profile'
+alias zshrc='vim ~/.zshrc'
+alias vimrc='vim ~/.vimrc'
+
+# Branch maintenance
+alias delete-merged='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
+
+findbranch() {
+  git branch | grep $@
+}
+
+fd() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+rubocop-branch() {
+  rubocop -A $(git diff master...$(git rev-parse --abbrev-ref HEAD) --name-only --no-merges)
+}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+HISTSIZE=5000               #How many lines of history to keep in memory
+HISTFILE=~/.zsh_history     #Where to save history to disk
+SAVEHIST=5000               #Number of history entries to save to disk
+HISTDUP=erase               #Erase duplicates in the history file
+setopt    appendhistory     #Append history to the history file (no overwriting)
+setopt    sharehistory      #Share history across terminals
+setopt    incappendhistory  #Immediately append to the history file, not just when a term is killed
+
+# SIMPLY BUSINESS CONFIGS
+# =================
+
+alias jz="/usr/bin/open -a '/Applications/Google Chrome.app' 'https://simplybusiness.zoom.us/j/8900215238?pwd=aFFuZFlTdjI5MHJwM0wwM0ZuTzBJUT09'"
+
+alias sr='DEBUG_SMOKETEST=true spring rspec'
+alias bus='bundle update --conservative'
+
+function bxr() {
+ DEBUG_SMOKETEST=true bundle exec rspec $@
+}
+
+
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+export GIT_PS1_SHOWCOLORHINTS=1
+source ~/.git-prompt.sh
+setopt PROMPT_SUBST ;
+PS1=' %~ $(__git_ps1 "(%s)") \$ '
+
+
+# COLOR
+export TERM=xterm-256color
+
+# GLOBAL EDITOR
+export EDITOR=vim
+
+# # After each command, append to the history file and reread it
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"

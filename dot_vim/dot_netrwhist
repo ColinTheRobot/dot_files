@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =0
+let g:netrw_dirhist_0='/Users/colin.hart/projects/x_rated_lite/lib/rater/lookup/results'
+let g:netrw_dirhist_9='/Users/colin.hart/projects/x_rated_lite/lib/rater/lookup'
+let g:netrw_dirhist_8='/Users/colin.hart/projects/x_rated_lite/lib/rater/lookup/results'
+let g:netrw_dirhist_7='/Users/colin.hart/projects/x_rated_lite/lib/projects/chopin/usa/usa/markel_insurance_company/shared/v15'
+let g:netrw_dirhist_6='/Users/colin.hart/projects/x_rated_lite/lib/projects/chopin/usa/usa/markel_insurance_company/shared'
+let g:netrw_dirhist_5='/Users/colin.hart/projects/x_rated_lite/lib/projects/chopin/usa/usa/hiscox/shared/v4'
+let g:netrw_dirhist_4='/Users/colin.hart/projects/x_rated_lite/lib/projects/chopin/usa/usa/hiscox/shared'
+let g:netrw_dirhist_3='/Users/colin.hart/projects/x_rated_lite/lib/projects/chopin/usa/usa/hiscox'
+let g:netrw_dirhist_2='/Users/colin.hart/projects/chopin/node_modules/es-abstract'
+let g:netrw_dirhist_1='/Users/colin.hart/projects/x_rated_lite/spec/factories'

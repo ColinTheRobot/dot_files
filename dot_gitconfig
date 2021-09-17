@@ -1,0 +1,36 @@
+[user]
+ email = colin.hart@simplybusiness.com
+ name = Colin Hart
+[secrets]
+ providers = git secrets --aws-provider
+ patterns = [A-Z0-9]{20}
+ patterns = (\"|')?(AWS|aws|Aws)?_?(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)(\"|')?\\s*(:|=>|=)\\s*(\"|')?[A-Za-z0-9/\\+=]{40}(\"|')?
+ patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
+ allowed = AKIAIOSFODNN8EXAMPLE
+ allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+[core]
+	excludesfile = /Users/colin.hart/.gitignore
+[alias]
+  edit = !vim -p $(git status --short | awk ' {print $2}' )
+  open-last-commit = !vim -p $(git show $(git log -n 1 $(git rev-parse --abbrev-ref HEAD) --no-merges --pretty=format:"%H") --name-only --oneline --pretty=\"format:\")
+  open-branch = !vim -p $(git diff master...$(git rev-parse --abbrev-ref HEAD) --name-only --no-merges)
+  switch-roles = !git commit -am \"wip/switching roles\" && git push origin "$(git rev-parse --abbrev-ref HEAD)"
+  wip = !git commit -am wip
+  show-prev-sha= !git rev-parse HEAD
+  commit-to-prev = !git commit -a --fixup "$(git rev-parse HEAD)" && git rebase -i --autosquash HEAD~2
+  recent = branch --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
+  pf = push --force-with-lease
+  modified-specs = "!f() { git diff --name-only --no-merges origin/$1...$(git rev-parse --abbrev-ref HEAD) 'spec/**' | paste -sd ' '; }; f"
+  modified-files = "!f() { git diff --name-only --no-merges origin/$1...$(git rev-parse --abbrev-ref HEAD) '.' | paste -sd ' '; }; f"
+[diff "gpg"]
+ textconv = gpg --quiet --no-tty --decrypt
+[push]
+	default = simple
+[pull]
+ default = current
+ ff = only
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process

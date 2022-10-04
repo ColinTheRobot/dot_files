@@ -1,0 +1,116 @@
+eval "$(rbenv init - zsh)"
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+
+# Load Git completion
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+fpath=(~/.zsh $fpath)
+
+autoload -Uz compinit && compinit
+
+
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    man "$@"
+}
+
+desktop() {
+  if [[ $@ == "--hide" ]]; then
+      command defaults write com.apple.finder CreateDesktop false; killall Finder
+  elif
+    [[ $@ == "--show" ]]; then
+      command defaults write com.apple.finder CreateDesktop true; killall Finder
+  else
+    printf "\a missing arg: use hide or show flags \n"
+  fi
+}
+
+function run_modified_specs() {
+  if [[ $# -eq 0 ]]; then
+     git modified-specs master | xargs bundle exec rspec
+  else
+     git modified-specs $@ | xargs bundle exec rspec
+  fi
+}
+
+function cd {
+    builtin cd "$@"
+    if [ -d ".git" ]; then
+        grep "git secrets --pre_commit_hook" .git/hooks/pre-commit -q 2> /dev/null
+        if [ ! $? -eq 0 ]; then
+            git secrets --install
+        fi
+    fi
+}
+
+# GIT
+alias gs='git status '
+alias ga='git add '
+alias gco='git checkout '
+
+alias got='git '
+alias get='git '
+
+alias bash_profile='vim ~/.bash_profile'
+alias zshrc='vim ~/.zshrc'
+alias vimrc='vim ~/.vimrc'
+
+# Branch maintenance
+alias delete-merged='git branch --merged | egrep -v "(^\*|master|dev)" | xargs git branch -d'
+
+findbranch() {
+  git branch | grep $@
+}
+
+fd() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+HISTSIZE=5000               #How many lines of history to keep in memory
+HISTFILE=~/.zsh_history     #Where to save history to disk
+SAVEHIST=5000               #Number of history entries to save to disk
+HISTDUP=erase               #Erase duplicates in the history file
+setopt    appendhistory     #Append history to the history file (no overwriting)
+setopt    sharehistory      #Share history across terminals
+setopt    incappendhistory  #Immediately append to the history file, not just when a term is killed
+
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+export GIT_PS1_SHOWCOLORHINTS=1
+source ~/.git-prompt.sh
+setopt PROMPT_SUBST ;
+PS1=' %~ $(__git_ps1 "(%s)") \$ '
+
+
+# COLOR
+export TERM=xterm-256color
+
+# GLOBAL EDITOR
+export EDITOR=nvim
+
+# # After each command, append to the history file and reread it
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
+# Load version control information
+autoload -Uz vcs_info
+precmd() { vcs_info }
+
+# Format the vcs_info_msg_0_ variable
+zstyle ':vcs_info:git:*' formats 'on branch %b'
+ 
+# Set up the prompt (with git branch name)
+setopt PROMPT_SUBST
+PROMPT='%n ${PWD/#$HOME/~} ${vcs_info_msg_0_}$ '

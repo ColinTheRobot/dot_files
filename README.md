@@ -9,7 +9,7 @@ directory is a package whose contents mirror `$HOME`.
 brew install stow
 git clone git@github.com:ColinTheRobot/dot_files.git ~/prs_dev/dot_files
 cd ~/prs_dev/dot_files
-stow -t ~ nvim tmux
+stow -t ~ nvim tmux zsh
 ```
 
 ## Adding a package

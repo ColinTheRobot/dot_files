@@ -23,6 +23,9 @@ require("jdtls").start_or_attach({
         importOnType = true,
       },
       implementationsCodeLens = { enabled = true },
+      inlayHints = {
+        parameterNames = { enabled = "all" },
+      },
       format = {
         enabled = true,
         comments = { enabled = false },

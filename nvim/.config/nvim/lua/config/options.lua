@@ -58,6 +58,3 @@ vim.opt.wildignore:append({
 
 -- Backspace behavior
 vim.opt.backspace = { "indent", "eol", "start" }
-
--- Ag
-vim.g.ackprg = "ag --vimgrep"

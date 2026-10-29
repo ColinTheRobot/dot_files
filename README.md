@@ -8,13 +8,14 @@ directory is a package whose contents mirror `$HOME`.
 ### 1. Install dependencies
 
 ```sh
-brew install stow neovim tmux starship ripgrep openjdk
+brew install stow neovim tmux starship ripgrep openjdk tree-sitter-cli
 brew install --cask font-jetbrains-mono-nerd-font
 curl -s "https://get.sdkman.io" | bash
 ```
 
 - `openjdk` is put on `PATH` by `.zshrc`, and Mason needs Java to run jdtls.
 - SDKMAN is optional. `.zshrc` only loads it if it's installed.
+- `tree-sitter-cli` builds the parsers nvim-treesitter installs.
 - `ripgrep` backs fzf-lua's `live_grep` (`<C-g>`, `<leader>fg`).
 - Set your terminal font to the Nerd Font so `nvim-web-devicons` renders.
 - [Claude Code](https://claude.com/claude-code) (`claude` CLI) is needed for

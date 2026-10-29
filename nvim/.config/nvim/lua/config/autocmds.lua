@@ -14,13 +14,33 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
     vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
+    vim.keymap.set({ "n", "x" }, "<Leader>ca", vim.lsp.buf.code_action, opts)
 
     if client and client:supports_method("textDocument/inlayHint") then
       vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
     end
 
+    if client and client:supports_method("textDocument/codeLens") then
+      vim.lsp.codelens.enable(true, { bufnr = bufnr })
+    end
+
     if client and client.name == "jdtls" then
-      vim.keymap.set("n", "<Leader>oi", require("jdtls").organize_imports, opts)
+      local jdtls = require("jdtls")
+      vim.keymap.set("n", "<Leader>oi", jdtls.organize_imports, opts)
+      vim.keymap.set("n", "<Leader>rv", jdtls.extract_variable, opts)
+      vim.keymap.set("x", "<Leader>rv", "<Esc><Cmd>lua require('jdtls').extract_variable({ visual = true })<CR>", opts)
+      vim.keymap.set("n", "<Leader>rc", jdtls.extract_constant, opts)
+      vim.keymap.set("x", "<Leader>rc", "<Esc><Cmd>lua require('jdtls').extract_constant({ visual = true })<CR>", opts)
+      vim.keymap.set("x", "<Leader>rm", "<Esc><Cmd>lua require('jdtls').extract_method({ visual = true })<CR>", opts)
+    end
+  end,
+})
+
+-- Reload buffers changed on disk by other tools (e.g. Claude Code)
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+  callback = function()
+    if vim.fn.getcmdwintype() == "" then
+      vim.cmd("checktime")
     end
   end,
 })

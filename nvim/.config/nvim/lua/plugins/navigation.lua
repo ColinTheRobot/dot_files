@@ -1,3 +1,19 @@
+local function cycle_pane(step)
+  local wins = vim.tbl_filter(function(w)
+    return vim.api.nvim_win_get_config(w).relative == ""
+  end, vim.api.nvim_tabpage_list_wins(0))
+  table.sort(wins, function(a, b)
+    return vim.fn.win_id2win(a) < vim.fn.win_id2win(b)
+  end)
+  local target = vim.fn.index(wins, vim.api.nvim_get_current_win()) + 1 + step
+  if vim.env.TMUX and (target < 1 or target > #wins) then
+    vim.api.nvim_set_current_win(wins[step > 0 and 1 or #wins])
+    vim.fn.system({ "tmux", "select-pane", "-t", step > 0 and ":.+" or ":.-" })
+  else
+    vim.api.nvim_set_current_win(wins[(target - 1) % #wins + 1])
+  end
+end
+
 return {
   -- Fuzzy Finder
   -- junegunn/fzf provides the fzf binary (also used by the shell via ~/.fzf.zsh)
@@ -32,6 +48,8 @@ return {
       { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
       { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
       { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+      { "<M-]>", function() cycle_pane(1) end, mode = { "n", "i", "t" }, desc = "Next pane (vim/tmux)" },
+      { "<M-[>", function() cycle_pane(-1) end, mode = { "n", "i", "t" }, desc = "Previous pane (vim/tmux)" },
     },
   },
 }

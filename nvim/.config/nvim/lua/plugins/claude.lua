@@ -1,5 +1,6 @@
 return {
   "codegik/claude-chat.nvim",
+  enabled = false,
   cmd = { "ClaudeChat", "ClaudeChatReset", "ClaudeChatFile", "ClaudeChatContinue", "ClaudeChatSessions" },
   keys = {
     { "<leader>ai", "<cmd>ClaudeChat<cr>", desc = "Claude Chat: toggle sidebar" },

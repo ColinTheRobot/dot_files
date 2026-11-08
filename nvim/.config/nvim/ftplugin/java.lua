@@ -2,6 +2,11 @@ vim.opt_local.tabstop = 4
 vim.opt_local.shiftwidth = 4
 vim.opt_local.cinoptions = "+2s,(2s,W2s,u0"
 
+-- nvim-jdtls is only installed when java is in ~/.config/dotfiles/langs
+if not require("config.langs").enabled("java") then
+  return
+end
+
 local mason = vim.fn.stdpath("data") .. "/mason/packages"
 local bundles = {
   vim.fn.glob(mason .. "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", true),

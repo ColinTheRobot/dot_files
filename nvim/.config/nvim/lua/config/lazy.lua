@@ -15,4 +15,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({ import = "plugins" })
+-- plugins/lang/* specs use `cond` rather than `enabled`, so a language that's
+-- off on this machine isn't installed but keeps its lazy-lock.json entry.
+require("lazy").setup({ { import = "plugins" }, { import = "plugins.lang" } })

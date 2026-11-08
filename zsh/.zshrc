@@ -1,6 +1,4 @@
 
-export PATH=/opt/homebrew/opt/openjdk/bin:$PATH
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 autoload -Uz compinit && compinit
@@ -34,11 +32,6 @@ setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt INC_APPEND_HISTORY
 
-spring() {
-  local profiles="${(j:,:)@:-local}"
-  ./mvnw spring-boot:run -Dactive.profile="$profiles"
-}
-
 awsl() {
   env -u AWS_PROFILE AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_REGION=eu-central-1 \
     aws --endpoint-url http://localhost:4566 "$@"
@@ -46,6 +39,11 @@ awsl() {
 
 eval "$(starship init zsh)"
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+# Language setup for this machine: ~/.config/dotfiles/langs lists one language
+# per line (written by install.sh --lang). Kept last because SDKMAN must be.
+if [[ -r ~/.config/dotfiles/langs ]]; then
+  for lang in ${(f)"$(<~/.config/dotfiles/langs)"}; do
+    [[ -r ~/.config/zsh/langs/$lang.zsh ]] && source ~/.config/zsh/langs/$lang.zsh
+  done
+  unset lang
+fi

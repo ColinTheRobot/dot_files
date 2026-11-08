@@ -1,0 +1,3 @@
+brew "openjdk"
+brew "maven"
+brew "mysql@8.4", link: true

@@ -1,8 +1,12 @@
+local java = require("config.langs").enabled("java")
+
 return {
+  { "mfussenegger/nvim-jdtls", cond = java },
   {
     "mfussenegger/nvim-dap",
     tag = "0.10.0",
     lazy = false,
+    cond = java,
     dependencies = { "theHamsta/nvim-dap-virtual-text" },
     config = function()
       local dap = require("dap")

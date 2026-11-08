@@ -1,0 +1,10 @@
+brew "colima"
+brew "docker"
+brew "docker-compose"
+
+cask "notion"
+cask "slack"
+cask "linear"
+cask "microsoft-outlook"
+cask "bruno"
+cask "tableplus"

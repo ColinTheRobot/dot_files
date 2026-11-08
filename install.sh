@@ -2,11 +2,41 @@
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
-JAVA_VERSIONS=(21.0.12-tem 25.0.4-tem 25.0.4-amzn)
-JAVA_DEFAULT=25.0.4-amzn
+LANGS_FILE=~/.config/dotfiles/langs
 TPM_VERSION=v3.1.0
 
+usage() {
+  echo "usage: $0 [--lang <name>]..." >&2
+  echo "languages: $(ls "$DOTFILES/langs" | tr '\n' ' ')" >&2
+  exit 1
+}
+
 step() { printf '\n==> %s\n' "$1"; }
+
+# --lang adds a language to this machine's langs file. Without it, the
+# languages already in the file are used, so reruns stay the same.
+new_langs=()
+while (( $# )); do
+  case "$1" in
+    --lang)
+      [[ -n "${2:-}" && -d "$DOTFILES/langs/$2" ]] || usage
+      new_langs+=("$2")
+      shift 2
+      ;;
+    *) usage ;;
+  esac
+done
+
+mkdir -p "$(dirname "$LANGS_FILE")"
+touch "$LANGS_FILE"
+for lang in ${new_langs[@]+"${new_langs[@]}"}; do
+  grep -qx "$lang" "$LANGS_FILE" || echo "$lang" >> "$LANGS_FILE"
+done
+langs=()
+while IFS= read -r lang; do
+  [[ -n "$lang" ]] && langs+=("$lang")
+done < "$LANGS_FILE"
+echo "Languages: ${langs[*]:-none}"
 
 step "Homebrew"
 if ! command -v brew >/dev/null 2>&1 && [[ ! -x /opt/homebrew/bin/brew ]]; then
@@ -18,10 +48,10 @@ if ! grep -qs 'brew shellenv' ~/.zprofile; then
 fi
 
 step "Brewfile"
-brew bundle --file "$DOTFILES/Brewfile"
+brew bundle --file "$("$DOTFILES/scripts/brewfile.sh")"
 
 step "Stow"
-for target in ~/.zshrc ~/.tmux.conf ~/.config/nvim; do
+for target in ~/.zshrc ~/.tmux.conf ~/.config/nvim ~/.config/zsh; do
   if [[ -e "$target" && ! -L "$target" ]]; then
     echo "Moving existing $target to $target.orig"
     mv "$target" "$target.orig"
@@ -30,35 +60,33 @@ done
 mkdir -p ~/.config
 stow -d "$DOTFILES" -t ~ nvim tmux zsh
 
+for lang in ${langs[@]+"${langs[@]}"}; do
+  if [[ -x "$DOTFILES/langs/$lang/install.sh" ]]; then
+    step "Language: $lang"
+    "$DOTFILES/langs/$lang/install.sh"
+  fi
+done
+
 step "tmux plugins"
 if [[ ! -d ~/.tmux/plugins/tpm ]]; then
   git clone --depth 1 --branch "$TPM_VERSION" https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
-~/.tmux/plugins/tpm/bin/install_plugins
-
-step "SDKMAN and Java"
-if [[ ! -s ~/.sdkman/bin/sdkman-init.sh ]]; then
-  curl -s "https://get.sdkman.io?rcupdate=false" | bash
-fi
-zsh -c '
-  source ~/.sdkman/bin/sdkman-init.sh
-  default=$1; shift
-  for version in "$@"; do
-    [[ -d ~/.sdkman/candidates/java/$version ]] || { echo n | sdk install java "$version" }
-  done
-  sdk default java "$default"
-' zsh "$JAVA_DEFAULT" "${JAVA_VERSIONS[@]}"
+# TPM installs through a tmux server that has loaded .tmux.conf, so use a
+# throwaway one rather than any server (and sessions) already running.
+tpm_tmp="$(mktemp -d)"
+env -u TMUX TMUX_TMPDIR="$tpm_tmp" tmux new-session -d
+env -u TMUX TMUX_TMPDIR="$tpm_tmp" ~/.tmux/plugins/tpm/bin/install_plugins
+env -u TMUX TMUX_TMPDIR="$tpm_tmp" tmux kill-server
+rm -rf "$tpm_tmp"
 
 step "Neovim plugins"
 nvim --headless "+Lazy! restore" +qa
-
-step "Docker"
-"$DOTFILES/scripts/setup-docker.sh"
 
 step "Done"
 cat <<'EOF'
 Remaining manual steps:
   - Create ~/.zshenv with your secrets and private environment variables.
   - Set your terminal font to "JetBrainsMono Nerd Font".
-  - Open a new shell, then open nvim and let Mason install jdtls and lemminx.
+  - Open a new shell, then open nvim and let Mason install this machine's
+    language servers (check with :Mason).
 EOF

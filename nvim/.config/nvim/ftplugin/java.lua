@@ -1,5 +1,6 @@
 vim.opt_local.tabstop = 4
 vim.opt_local.shiftwidth = 4
+vim.opt_local.cinoptions = "+2s,(2s,W2s,u0"
 
 local mason = vim.fn.stdpath("data") .. "/mason/packages"
 local bundles = {
@@ -16,6 +17,7 @@ end
 -- start_or_attach reuses the running server for the same root_dir.
 require("jdtls").start_or_attach({
   init_options = { bundles = bundles },
+  capabilities = require("cmp_nvim_lsp").default_capabilities(),
   cmd = {
     "jdtls",
     "--jvm-arg=-Djava.import.generatesMetadataFilesAtProjectRoot=false",
@@ -25,12 +27,15 @@ require("jdtls").start_or_attach({
   root_dir = vim.fs.root(0, { "pom.xml", "build.gradle", ".git" }),
   settings = {
     java = {
+      autobuild = { enabled = false },
       referencesCodeLens = { enabled = true },
       symbols = { includeSourceMethodDeclarations = true },
       contentProvider = { preferred = "fernflower" },
       sources = {
         organizeImports = { starThreshold = 9999 },
       },
+      saveActions = { organizeImports = true },
+      completion = { importOrder = { "#", "" } },
       project = {
         sourceEncoding = "UTF-8",
         importOnType = true,

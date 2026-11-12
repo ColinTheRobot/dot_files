@@ -4,6 +4,7 @@ set -euo pipefail
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 JAVA_VERSIONS=(21.0.12-tem 25.0.4-tem 25.0.4-amzn)
 JAVA_DEFAULT=25.0.4-amzn
+TPM_VERSION=v3.1.0
 
 step() { printf '\n==> %s\n' "$1"; }
 
@@ -28,6 +29,12 @@ for target in ~/.zshrc ~/.tmux.conf ~/.config/nvim; do
 done
 mkdir -p ~/.config
 stow -d "$DOTFILES" -t ~ nvim tmux zsh
+
+step "tmux plugins"
+if [[ ! -d ~/.tmux/plugins/tpm ]]; then
+  git clone --depth 1 --branch "$TPM_VERSION" https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+~/.tmux/plugins/tpm/bin/install_plugins
 
 step "SDKMAN and Java"
 if [[ ! -s ~/.sdkman/bin/sdkman-init.sh ]]; then

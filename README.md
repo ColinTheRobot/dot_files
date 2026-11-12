@@ -19,10 +19,12 @@ git clone git@github.com:ColinTheRobot/dot_files.git ~/prs_dev/dot_files
 2. Runs `brew bundle` on the `Brewfile`.
 3. Stows `nvim`, `tmux` and `zsh`. Any existing non-symlink `~/.zshrc`,
    `~/.tmux.conf` or `~/.config/nvim` is moved aside to `*.orig` first.
-4. Installs SDKMAN and the Java versions listed in `JAVA_VERSIONS`, and sets
+4. Clones [TPM](https://github.com/tmux-plugins/tpm) at `TPM_VERSION` and
+   installs the tmux plugins listed in `.tmux.conf` (tmux-pomodoro-plus).
+5. Installs SDKMAN and the Java versions listed in `JAVA_VERSIONS`, and sets
    `JAVA_DEFAULT` as the default.
-5. Restores Neovim plugins from `lazy-lock.json`.
-6. Runs `scripts/setup-docker.sh`, which registers the `docker compose`
+6. Restores Neovim plugins from `lazy-lock.json`.
+7. Runs `scripts/setup-docker.sh`, which registers the `docker compose`
    plugin, starts the colima VM (4 CPU, 8 GiB memory, 60 GiB disk, `vz`,
    `virtiofs`) and switches Docker to the `colima` context.
 

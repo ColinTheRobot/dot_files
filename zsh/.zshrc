@@ -21,6 +21,9 @@ for i in {1..10}; do
 done
 unset _z i
 
+alias gs='git status'
+alias gco='git checkout'
+
 
 # Save and persist history across tabs
 export HISTFILE=~/.zsh_history
@@ -36,38 +39,9 @@ spring() {
   ./mvnw spring-boot:run -Dactive.profile="$profiles"
 }
 
-# Open files modified or added on the current branch (vs. its default branch,
-# plus any uncommitted changes) in nvim, one tab per file.
-nvb() {
-  local root
-  root=$(git rev-parse --show-toplevel 2>/dev/null) || { echo "nvb: not inside a git repo" >&2; return 1 }
-
-  local default_branch
-  default_branch=$(git -C "$root" symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)
-  default_branch=${default_branch:-origin/main}
-
-  local base
-  base=$(git -C "$root" merge-base "$default_branch" HEAD 2>/dev/null) \
-    || base=$(git -C "$root" merge-base main HEAD 2>/dev/null) \
-    || base=$(git -C "$root" merge-base master HEAD 2>/dev/null)
-
-  if [[ -z "$base" ]]; then
-    echo "nvb: couldn't determine a base branch (tried $default_branch, main, master)" >&2
-    return 1
-  fi
-
-  local -a files
-  files=(${(f)"$(git -C "$root" diff --name-only --diff-filter=ACMR "$base")"})
-  files+=(${(f)"$(git -C "$root" ls-files --others --exclude-standard)"})
-  files=(${(u)files})
-  files=(${files:#})
-
-  if (( ${#files[@]} == 0 )); then
-    echo "nvb: no changed or added files vs $base"
-    return 1
-  fi
-
-  nvim -p ${files/#/$root/}
+awsl() {
+  env -u AWS_PROFILE AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_REGION=eu-central-1 \
+    aws --endpoint-url http://localhost:4566 "$@"
 }
 
 eval "$(starship init zsh)"

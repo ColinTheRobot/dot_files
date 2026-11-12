@@ -58,3 +58,8 @@ vim.opt.wildignore:append({
 
 -- Backspace behavior
 vim.opt.backspace = { "indent", "eol", "start" }
+
+-- Final newline
+require("editorconfig").properties.insert_final_newline = function(bufnr, val)
+  vim.bo[bufnr].fixendofline = val == "true"
+end

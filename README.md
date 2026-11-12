@@ -38,7 +38,9 @@ Notes:
 - Set your terminal font to "JetBrainsMono Nerd Font" so `nvim-web-devicons`
   renders.
 - [Claude Code](https://claude.com/claude-code) (`claude` CLI, installed by
-  the Brewfile) is needed for `claude-chat.nvim` (`<leader>ai`).
+  the Brewfile) connects to Neovim through `claudecode.nvim`: run `/ide` in
+  Claude Code. Keymaps: `<leader>ab` adds the buffer, `<leader>as` sends the
+  selection, `<leader>aa` / `<leader>ad` accept or deny a diff.
 
 ### 2. Create `~/.zshenv`
 
@@ -62,6 +64,9 @@ Open a new shell, then open `nvim` and let it finish bootstrapping:
 - Mason installs `jdtls` and `lemminx`. Check progress with `:Mason`. Java
   buffers won't get LSP features until jdtls (and its bundled `lombok.jar`)
   has finished installing.
+- Debugging and running Java tests need two more Mason packages that aren't
+  installed automatically: `:MasonInstall java-debug-adapter java-test`, then
+  reopen the Java buffer so jdtls loads their bundles.
 
 ## Adding a package
 

@@ -3,10 +3,11 @@ set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 LANGS_FILE=~/.config/dotfiles/langs
+JAVA_VERSIONS_FILE=~/.config/dotfiles/java-versions
 TPM_VERSION=v3.1.0
 
 usage() {
-  echo "usage: $0 [--lang <name>]..." >&2
+  echo "usage: $0 [--lang <name>]... [--java-version <sdkman id or latest>]..." >&2
   echo "languages: $(ls "$DOTFILES/langs" | tr '\n' ' ')" >&2
   exit 1
 }
@@ -15,12 +16,20 @@ step() { printf '\n==> %s\n' "$1"; }
 
 # --lang adds a language to this machine's langs file. Without it, the
 # languages already in the file are used, so reruns stay the same.
+# --java-version replaces this machine's JDK list (and enables java).
 new_langs=()
+java_versions=()
 while (( $# )); do
   case "$1" in
     --lang)
       [[ -n "${2:-}" && -d "$DOTFILES/langs/$2" ]] || usage
       new_langs+=("$2")
+      shift 2
+      ;;
+    --java-version)
+      [[ -n "${2:-}" ]] || usage
+      java_versions+=("$2")
+      new_langs+=(java)
       shift 2
       ;;
     *) usage ;;
@@ -32,6 +41,9 @@ touch "$LANGS_FILE"
 for lang in ${new_langs[@]+"${new_langs[@]}"}; do
   grep -qx "$lang" "$LANGS_FILE" || echo "$lang" >> "$LANGS_FILE"
 done
+if [[ -n "${java_versions[*]:-}" ]]; then
+  printf '%s\n' "${java_versions[@]}" > "$JAVA_VERSIONS_FILE"
+fi
 langs=()
 while IFS= read -r lang; do
   [[ -n "$lang" ]] && langs+=("$lang")

@@ -16,7 +16,9 @@ git clone git@github.com:ColinTheRobot/dot_files.git ~/prs_dev/dot_files
 `install.sh` is safe to rerun. It:
 
 1. Adds any `--lang` languages to `~/.config/dotfiles/langs` (see
-   [Languages](#languages)). Later runs without `--lang` use what's in that file.
+   [Languages](#languages)), and any `--java-version`s to
+   `~/.config/dotfiles/java-versions` (see [Java versions](#java-versions)).
+   Later runs without these flags use what's in those files.
 2. Installs Homebrew if it's missing and adds `brew shellenv` to `~/.zprofile`.
 3. Runs `brew bundle` on the `Brewfile` plus each enabled language's
    `langs/<lang>/Brewfile`.
@@ -84,7 +86,7 @@ language's setup never installs anything on this machine. `install.sh --lang
 | Layer | Java | Ruby |
 |---|---|---|
 | Homebrew | `langs/java/Brewfile`: openjdk, maven, mysql | `langs/ruby/Brewfile`: rbenv, ruby-build, postgres, redis, … |
-| Install | `langs/java/install.sh`: SDKMAN and `JAVA_VERSIONS` | `langs/ruby/install.sh`: rbenv `RUBY_VERSIONS`, plus bundler and ruby-lsp for each |
+| Install | `langs/java/install.sh`: SDKMAN and this machine's [JDKs](#java-versions) | `langs/ruby/install.sh`: rbenv `RUBY_VERSIONS`, plus bundler and ruby-lsp for each |
 | Shell | `~/.config/zsh/langs/java.zsh`: openjdk `PATH`, SDKMAN, `spring` | `~/.config/zsh/langs/ruby.zsh`: rbenv, `ulimit`, `run_modified_specs` |
 | Neovim | `plugins/lang/java.lua` (nvim-jdtls, nvim-dap), `ftplugin/java.lua`; Mason installs jdtls and lemminx | `plugins/lang/ruby.lua` (vim-rails), `ftplugin/ruby.lua`, `after/lsp/ruby_lsp.lua` |
 
@@ -102,6 +104,27 @@ To add a language, create `langs/<name>/` with a `Brewfile` and/or an
 executable `install.sh`, add `zsh/.config/zsh/langs/<name>.zsh` and
 `nvim/.config/nvim/lua/plugins/lang/<name>.lua` as needed, and gate anything
 that installs (Mason servers, treesitter parsers) on `langs.enabled("<name>")`.
+
+### Java versions
+
+Each machine lists its JDKs in `~/.config/dotfiles/java-versions` (not in the
+repo), one [SDKMAN](https://sdkman.io) identifier per line, such as
+`21.0.12-tem`. The first one is the default `java`. `latest` installs the
+newest Corretto, looked up on each run, so a rerun picks up new releases (older
+ones stay installed).
+
+The first time java is installed, `install.sh` asks for the versions (Enter
+for `latest`). To set them without the prompt, or to change them later, pass
+`--java-version` once per JDK. This replaces the file and enables java:
+
+```sh
+./install.sh --java-version latest
+./install.sh --java-version 25.0.4-amzn --java-version 21.0.12-tem --java-version 25.0.4-tem
+```
+
+You can also edit the file and rerun `install.sh`. JDKs removed from the list
+aren't uninstalled; use `sdk uninstall java <id>`. Neovim's Java test runner
+uses `21.0.12-tem` when it's installed, otherwise the default JDK.
 
 ### `work`
 

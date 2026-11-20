@@ -1,0 +1,5 @@
+# The SDKMAN installer needs Bash 4+; macOS ships 3.2.
+brew "bash"
+brew "openjdk"
+brew "maven"
+brew "mysql@8.4", link: true

@@ -14,11 +14,16 @@ return {
       { "<leader>atl", "<cmd>TestLast -strategy=claude<cr>", desc = "Claude: re-run last test" },
     },
     init = function()
+      -- Run Maven on JDK 21 where it's installed, otherwise SDKMAN's default JDK.
+      local java_home = "$HOME/.sdkman/candidates/java/21.0.12-tem"
+      if vim.fn.isdirectory(vim.fn.expand(java_home)) == 0 then
+        java_home = "$HOME/.sdkman/candidates/java/current"
+      end
+
       vim.g.VimuxUseNearest = 0
       vim.g["test#strategy"] = "vimux"
       vim.g["test#java#runner"] = "maventest"
-      vim.g["test#java#maventest#executable"] =
-        "JAVA_HOME=$HOME/.sdkman/candidates/java/21.0.12-tem mvn"
+      vim.g["test#java#maventest#executable"] = "JAVA_HOME=" .. java_home .. " mvn"
       vim.g["test#custom_transformations"] = {
         integration_tests = function(cmd)
           if cmd:find(" verify ") then

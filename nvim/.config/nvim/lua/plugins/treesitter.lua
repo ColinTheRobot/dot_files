@@ -5,7 +5,15 @@ return {
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter").install({ "java", "xml", "yaml", "json", "sql", "bash", "ruby" })
+      local langs = require("config.langs")
+      local parsers = { "xml", "yaml", "json", "sql", "bash", "lua" }
+      if langs.enabled("java") then
+        vim.list_extend(parsers, { "java" })
+      end
+      if langs.enabled("ruby") then
+        vim.list_extend(parsers, { "ruby", "embedded_template", "html", "javascript" })
+      end
+      require("nvim-treesitter").install(parsers)
 
       vim.api.nvim_create_autocmd("FileType", {
         callback = function()

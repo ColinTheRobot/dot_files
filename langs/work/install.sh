@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Docker via colima. Run by install.sh when work is in ~/.config/dotfiles/langs.
 set -euo pipefail
 
 mkdir -p ~/.docker/cli-plugins

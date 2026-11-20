@@ -1,0 +1,7 @@
+brew "rbenv"
+brew "ruby-build"
+brew "libyaml"
+brew "node"
+brew "postgresql@15"
+brew "redis"
+brew "imagemagick"

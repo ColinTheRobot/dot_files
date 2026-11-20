@@ -1,0 +1,8 @@
+brew "mas"
+# Generates .xcodeproj files from project.yml, so projects don't commit them
+brew "xcodegen"
+# Lets sourcekit-lsp (Neovim) understand Xcode projects: buildServer.json
+brew "xcode-build-server"
+brew "xcbeautify"
+# The tree-sitter swift parser is generated from its grammar.js
+brew "node"

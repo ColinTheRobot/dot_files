@@ -85,9 +85,9 @@ language's setup never installs anything on this machine. `install.sh --lang
 
 | Layer | Java | Ruby | Rust | Swift |
 |---|---|---|---|---|
-| Homebrew | `langs/java/Brewfile`: openjdk, maven, mysql | `langs/ruby/Brewfile`: rbenv, ruby-build, postgres, redis, … | `langs/rust/Brewfile`: espflash, cargo-generate, cmake, ninja (ESP32) | `langs/swift/Brewfile`: mas, xcodegen, xcode-build-server, xcbeautify |
+| Homebrew | `langs/java/Brewfile`: openjdk, maven, mysql | `langs/ruby/Brewfile`: rbenv, ruby-build, postgres, redis, … | `langs/rust/Brewfile`: espflash, cargo-generate, cmake, ninja, python@3.12 (ESP32) | `langs/swift/Brewfile`: mas, xcodegen, xcode-build-server, xcbeautify |
 | Install | `langs/java/install.sh`: SDKMAN and this machine's [JDKs](#java-versions) | `langs/ruby/install.sh`: rbenv `RUBY_VERSIONS`, plus bundler and ruby-lsp for each | `langs/rust/install.sh`: rustup, stable and nightly with rust-analyzer and rust-src, ldproxy | `langs/swift/install.sh`: [Xcode](#swift) and the iOS platform |
-| Shell | `~/.config/zsh/langs/java.zsh`: openjdk `PATH`, SDKMAN, `spring` | `~/.config/zsh/langs/ruby.zsh`: rbenv, `ulimit`, `run_modified_specs` | `~/.config/zsh/langs/rust.zsh`: `~/.cargo/env` | — |
+| Shell | `~/.config/zsh/langs/java.zsh`: openjdk `PATH`, SDKMAN, `spring` | `~/.config/zsh/langs/ruby.zsh`: rbenv, `ulimit`, `run_modified_specs` | `~/.config/zsh/langs/rust.zsh`: `~/.cargo/env`, Python 3.12 first on `PATH` for ESP-IDF | — |
 | Neovim | `plugins/lang/java.lua` (nvim-jdtls, nvim-dap), `ftplugin/java.lua`; Mason installs jdtls and lemminx | `plugins/lang/ruby.lua` (vim-rails), `ftplugin/ruby.lua`, `after/lsp/ruby_lsp.lua` | rust_analyzer from rustup; rust and toml parsers | sourcekit-lsp from Xcode; swift parser |
 
 - `.zshrc` sources `~/.config/zsh/langs/<lang>.zsh` for each enabled language.

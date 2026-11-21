@@ -10,7 +10,7 @@ directory is a package whose contents mirror `$HOME`.
 ```sh
 xcode-select --install
 git clone git@github.com:ColinTheRobot/dot_files.git ~/prs_dev/dot_files
-~/prs_dev/dot_files/install.sh --lang java --lang work   # or --lang ruby, etc.
+~/prs_dev/dot_files/install.sh --lang java --lang work   # or --lang ruby, rust, swift
 ```
 
 `install.sh` is safe to rerun. It:
@@ -83,12 +83,12 @@ line. That file isn't in the repo, so pulling a commit that changes another
 language's setup never installs anything on this machine. `install.sh --lang
 <name>` adds a language to the file and installs it.
 
-| Layer | Java | Ruby |
-|---|---|---|
-| Homebrew | `langs/java/Brewfile`: openjdk, maven, mysql | `langs/ruby/Brewfile`: rbenv, ruby-build, postgres, redis, … |
-| Install | `langs/java/install.sh`: SDKMAN and this machine's [JDKs](#java-versions) | `langs/ruby/install.sh`: rbenv `RUBY_VERSIONS`, plus bundler and ruby-lsp for each |
-| Shell | `~/.config/zsh/langs/java.zsh`: openjdk `PATH`, SDKMAN, `spring` | `~/.config/zsh/langs/ruby.zsh`: rbenv, `ulimit`, `run_modified_specs` |
-| Neovim | `plugins/lang/java.lua` (nvim-jdtls, nvim-dap), `ftplugin/java.lua`; Mason installs jdtls and lemminx | `plugins/lang/ruby.lua` (vim-rails), `ftplugin/ruby.lua`, `after/lsp/ruby_lsp.lua` |
+| Layer | Java | Ruby | Rust | Swift |
+|---|---|---|---|---|
+| Homebrew | `langs/java/Brewfile`: openjdk, maven, mysql | `langs/ruby/Brewfile`: rbenv, ruby-build, postgres, redis, … | `langs/rust/Brewfile`: espflash, cargo-generate, cmake, ninja, python@3.12 (ESP32) | `langs/swift/Brewfile`: mas, xcodegen, xcode-build-server, xcbeautify |
+| Install | `langs/java/install.sh`: SDKMAN and this machine's [JDKs](#java-versions) | `langs/ruby/install.sh`: rbenv `RUBY_VERSIONS`, plus bundler and ruby-lsp for each | `langs/rust/install.sh`: rustup, stable and nightly with rust-analyzer and rust-src, ldproxy | `langs/swift/install.sh`: [Xcode](#swift) and the iOS platform |
+| Shell | `~/.config/zsh/langs/java.zsh`: openjdk `PATH`, SDKMAN, `spring` | `~/.config/zsh/langs/ruby.zsh`: rbenv, `ulimit`, `run_modified_specs` | `~/.config/zsh/langs/rust.zsh`: `~/.cargo/env`, Python 3.12 first on `PATH` for ESP-IDF | — |
+| Neovim | `plugins/lang/java.lua` (nvim-jdtls, nvim-dap), `ftplugin/java.lua`; Mason installs jdtls and lemminx | `plugins/lang/ruby.lua` (vim-rails), `ftplugin/ruby.lua`, `after/lsp/ruby_lsp.lua` | rust_analyzer from rustup; rust and toml parsers | sourcekit-lsp from Xcode; swift parser |
 
 - `.zshrc` sources `~/.config/zsh/langs/<lang>.zsh` for each enabled language.
   All of them are stowed; only enabled ones are sourced.
@@ -99,6 +99,8 @@ language's setup never installs anything on this machine. `install.sh --lang
   another machine's plugins.
 - ruby-lsp isn't installed by Mason. It's a gem in each rbenv Ruby, run through
   the rbenv shim so it uses the project's Ruby and bundle.
+- rust-analyzer and sourcekit-lsp aren't installed by Mason either: they come
+  with the Rust toolchain and Xcode, so they match the compiler.
 
 To add a language, create `langs/<name>/` with a `Brewfile` and/or an
 executable `install.sh`, add `zsh/.config/zsh/langs/<name>.zsh` and
@@ -125,6 +127,16 @@ for `latest`). To set them without the prompt, or to change them later, pass
 You can also edit the file and rerun `install.sh`. JDKs removed from the list
 aren't uninstalled; use `sdk uninstall java <id>`. Neovim's Java test runner
 uses `21.0.12-tem` when it's installed, otherwise the default JDK.
+
+### Swift
+
+iOS apps need the full Xcode, not just the Command Line Tools.
+`langs/swift/install.sh` installs it with `mas` (sign in to the App Store app
+first; if that fails it says so and carries on), points `xcode-select` at it,
+accepts the license and downloads the iOS platform. The first three steps use
+`sudo`, so run it from a terminal. Projects keep a `project.yml` and generate the `.xcodeproj` with
+`xcodegen`. For Neovim, run `xcode-build-server config -project <name>.xcodeproj
+-scheme <scheme>` in the project once so sourcekit-lsp can follow the build.
 
 ### `work`
 

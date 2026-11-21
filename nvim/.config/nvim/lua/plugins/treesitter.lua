@@ -13,6 +13,12 @@ return {
       if langs.enabled("ruby") then
         vim.list_extend(parsers, { "ruby", "embedded_template", "html", "javascript" })
       end
+      if langs.enabled("rust") then
+        vim.list_extend(parsers, { "rust", "toml" })
+      end
+      if langs.enabled("swift") then
+        vim.list_extend(parsers, { "swift" })
+      end
       require("nvim-treesitter").install(parsers)
 
       vim.api.nvim_create_autocmd("FileType", {

@@ -23,6 +23,15 @@ return {
       if langs.enabled("ruby") then
         vim.lsp.enable("ruby_lsp")
       end
+      -- rust-analyzer is a rustup component (langs/rust/install.sh), so it
+      -- matches the toolchain. sourcekit-lsp comes with Xcode; for Xcode
+      -- projects, run `xcode-build-server config` to write buildServer.json.
+      if langs.enabled("rust") then
+        vim.lsp.enable("rust_analyzer")
+      end
+      if langs.enabled("swift") then
+        vim.lsp.enable("sourcekit")
+      end
     end,
   },
 }

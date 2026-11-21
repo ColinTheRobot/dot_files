@@ -1,0 +1,7 @@
+# ESP32 firmware (esp-rs): flashing, project templates, and the ESP-IDF build
+brew "espflash"
+brew "cargo-generate"
+brew "cmake"
+brew "ninja"
+# ESP-IDF's Python tooling; macOS's Python 3.9 can't satisfy its requirements
+brew "python@3.12"

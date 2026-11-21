@@ -9,7 +9,8 @@ XCODE=/Applications/Xcode.app
 
 if [[ ! -d "$XCODE" ]]; then
   echo "Installing Xcode from the App Store (sign in to the App Store app first)"
-  if ! mas get "$XCODE_APP_STORE_ID"; then
+  # mas 7 needs root to install apps.
+  if ! sudo mas get "$XCODE_APP_STORE_ID"; then
     echo "Couldn't install Xcode. Install it from the App Store and rerun install.sh." >&2
     exit 0
   fi

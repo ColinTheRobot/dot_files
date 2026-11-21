@@ -133,8 +133,8 @@ uses `21.0.12-tem` when it's installed, otherwise the default JDK.
 iOS apps need the full Xcode, not just the Command Line Tools.
 `langs/swift/install.sh` installs it with `mas` (sign in to the App Store app
 first; if that fails it says so and carries on), points `xcode-select` at it,
-accepts the license (both ask for your password) and downloads the iOS
-platform. Projects keep a `project.yml` and generate the `.xcodeproj` with
+accepts the license and downloads the iOS platform. The first three steps use
+`sudo`, so run it from a terminal. Projects keep a `project.yml` and generate the `.xcodeproj` with
 `xcodegen`. For Neovim, run `xcode-build-server config -project <name>.xcodeproj
 -scheme <scheme>` in the project once so sourcekit-lsp can follow the build.
 
